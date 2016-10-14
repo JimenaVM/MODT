@@ -1,0 +1,137 @@
+<?php
+class UsuarioModel
+{
+	private $pdo;
+
+	public function _CONSTRUCT()
+	{
+		try
+		{
+			$this->pdo=new PDO('mysql: host=localhost;dbname=inventario','root','');
+			$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		}
+		catch(Exeption $e)
+		{
+			die($e->getMessage());
+		}
+	}
+	public function Listar()
+	{
+      try
+      {
+      	$result=array();
+
+      	$usuario->execute();
+      	foreach ($usuario ->fetchAll(PDO::FETCH_OBJ)as $r) {
+
+      		$usuario=new usuario();
+      		$usuario->_SET('idUsuario',$r->id);
+      		$usuario->_SET('Nombre', $r->Nombre);
+      		$usuario->_SET('ApellidoPaterno', $r->ApellidoPaterno);
+      		$usuario->_SET('ApellidoMaterno', $r->ApellidoMaterno); 
+      		$usuario->_SET('Email', $r->Email);
+
+      		$result[]=$usuario;  
+
+      	}
+      	return $result;
+      }
+      catch(Exeption $e)
+      {
+      	die($e->getMessage());
+      }
+
+          header("Location: ../Vistas/usuario.php");
+	}
+	public fucntion Obtener($id)
+	{
+		try
+		{
+			$obten=$this->pdo->prepare("SELECT *FROM usuario WHERE idUsuario=?")
+
+			$obten->execute(array($id));
+			$r=$stm->fecth(PDO::FETCH_OBJ);
+
+			$alm=new usuario();
+
+			$alm->_SET('idUsuario',$r-<id);
+			$alm->_SET('nombre',$r-<Nombre);
+			$alm->_SET('apellidoPaterno',$r-<ApellidoPaterno);
+			$alm->_SET('apellidoMaterno',$r-<ApellidoMaterno);
+			$alm->_SET('email',$r-<Email);
+
+			return $alm;
+
+		}
+		catch(Exeption $e)
+		{
+			die($e->getMessage());
+		}
+
+	}
+	public function Eliminar($id)
+	{
+		try{
+			$stm=$this->pdo->prepare("DELETE FROM usuario WHERE idUsuario=?");
+
+			$stm->execute(array($id));
+
+		}
+		catch(Exeption $e)
+		{
+			die($e->getMessage());
+		}
+
+	}
+	public function Actualizar(usuario $data){
+		try{
+			$sql="UPDATE usuario SET 
+			          nombre               =?,
+			          apellidoPaterno      =?,
+			          apellidoMaterno      =?,
+			          email                =?,
+			          telefono             =?";
+
+			$this->pdo->prepare($sql)->execute(
+			array (
+				$data->_GET('Nombre'),
+				$data->_GET('ApellidoPaterno'),
+				$data->_GET('ApellidoMaterno'),
+				$data->_GET('email'),
+				$data->_GET('telefono'),
+				$data->_GET('idUsuario')
+				)
+			);          
+		}
+		catch(Exeption $e)
+		{
+			die($e->getMessage());
+		}
+	}
+
+	public function Registrar(usuario $data)
+	{
+       try{
+       	$sql="INSERT INTO usuario(nombre, apellidoPaterno,apellidoMaterno,email,telefono,login,password,estado,idRol)
+       	       VALUES(?,?,?,?,?,'pepe','123','0','3')";
+
+       	       $this->pdo->prepare($sql)->execute(
+       	       	array(
+       	       			$data->_POST('Nombre'),
+				        $data->_POST('ApellidoPaterno'),
+				        $data->_POST('ApellidoMaterno'),
+				        $data->_POST('Email'),
+				        $data->_POST('Pelefono')
+				
+       	       		)
+       	       	);
+
+       	       header("Location: ../Vistas/usuario.php");
+       }
+       catch(Exeption $e)
+		{
+			die($e->getMessage());
+		}
+	}
+
+}
