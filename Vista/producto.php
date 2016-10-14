@@ -1,31 +1,9 @@
-<?php 
- 
- session_start();
-  $con=require '../Controlador/conexion.php';
-
-  #
-   include_once "../Controlador/conexion.php";
-  $cnn = new connexion();
-  $con = $cnn -> conectar();
-  $database = mysqli_select_db($con,"inventario");
-  #
-  
-  if(!isset($_SESSION["id_usuario"])){
-    header("Location: ../Vista/index.php");
-  }
-  
-  $sql = "SELECT idRol, tipo FROM rol";
-  $result=mysqli_query($con,$sql);
-  
-  $bandera = false;
-  
-  #nombre usuario
-  $idUsuario = $_SESSION['id_usuario'];
-  
-  $sql = "SELECT u.IdRolUsuario, p.nombre FROM rolusuario AS u INNER JOIN usuario AS p ON u.idUsuario=p.idUsuario WHERE u.idUsuario = '$idUsuario'";
-  $result=mysqli_query($con,$sql);
-  
-  $row = $result->fetch_assoc();
+<?php
+session_start();
+if (!isset($_SESSION['loggedin'])) {
+    # code...
+    header("location: index.php");
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -66,126 +44,127 @@
 </head>
 
 <body>
+  <?php
+  include_once("../Controlador/conexion.php");
 
+  $cnn = new connexion();
+  $con = $cnn -> conectar();
+  $database = mysqli_select_db($con,"inventario") or die("Error al conectar la base de datos");
+  ?>
 
   <aside class="sidebar-left-collapse">
      <a href="" class="company-logo">Supersol</a>
-    
-    <div class="sidebar-links">
 
-      <div class="link-blue">
+     <div class="sidebar-links">
+       <?php if($_SESSION['rol']==1) { ?>
+       <div class="link-blue">
+         <a href="#">
+           <i></i>Principal
+         </a>
+         <ul class="sub-links">
+           <li><a href="usuario.php">Usuarios</a></li>
+           <li><a href="#">Auditoria</a></li>
+         </ul>
+       </div>
+       <div class="link-red">
+         <a href="#">
+           <i ></i>Inventarios
+         </a>
+         <ul class="sub-links">
+           <li><a href="categoria.php">Categorías</a></li>
+           <li><a href="producto.php">Productos</a></li>
+           <li><a href="proveedor.php">Proveedores</a></li>
+           <li><a href="#">Link 4</a></li>
+         </ul>
+       </div>
+       <div class="link-yellow">
+         <a href="#">
+           <i ></i>Ventas
+         </a>
+         <ul class="sub-links">
+           <li><a href="#">Generar Venta</a></li>
+           <li><a href="#">Dosificación</a></li>
+           <li><a href="#">Facturación</a></li>
+         </ul>
+       </div>
+       <div class="link-green">
+         <a href="#">
+           <i ></i>Clientes
+         </a>
+         <ul class="sub-links">
+           <li><a href="cliente.php">Administrar Clientes</a></li>
+           <li><a href="empresa.php">Administrar Empresas</a></li>
+         </ul>
+       </div>
+       <div class="link-pink">
+         <a href="#">
+           <i ></i>Créditos
+         </a>
+         <ul class="sub-links">
+           <li><a href="credito.php">Administrar Creditos</a></li>
+         </ul>
+       </div>
+       <div class="link-orange">
+         <a href="#">
+           <i ></i>Promociones
+         </a>
+         <ul class="sub-links">
+           <li><a href="promocion.php">Administrar Promoción</a></li>
+         </ul>
+       </div>
+       <div class="link-orange">
+         <a href="#">
+           <i ></i>Reportes y Dashboards
+         </a>
+         <ul class="sub-links">
+           <li><a href="#">Administrar Promoción</a></li>
+         </ul>
+       </div>
+       <?php } ?>
+       <?php if($_SESSION['rol']==2) { ?>
+       <div class="link-red">
+         <a href="#">
+           <i ></i>Inventarios
+         </a>
+         <ul class="sub-links">
+           <li><a href="categoria.php">Categorías</a></li>
+           <li><a href="producto.php">Productos</a></li>
+           <li><a href="proveedor.php">Proveedores</a></li>
+           <li><a href="#">Link 4</a></li>
+         </ul>
+       </div>
+       <?php } ?>
 
-        <a href="#">
-          <i></i>Principal
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="usuario.php">Usuarios</a></li>
-          <li><a href="#">Auditoria</a></li>
-          
-        </ul>
-
-      </div>
-
-      <div class="link-red">
-
-        <a href="#">
-          <i ></i>Inventarios
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="categoria.php">Categorías</a></li>
-          <li><a href="">Productos</a></li>
-          <li><a href="proveedor.php">Proveedores</a></li>
-          <li><a href="#">Link 4</a></li>
-        </ul>
-
-      </div>
-
-      <div class="link-yellow">
-
-        <a href="#">
-          <i ></i>Ventas
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="#">Generar Venta</a></li>
-          <li><a href="#">Dosificación</a></li>
-          <li><a href="#">Facturación</a></li>
-          
-        </ul>
-
-      </div>
-
-      <div class="link-green">
-
-        <a href="#">
-          <i ></i>Clientes
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="cliente.php">Administrar Clientes</a></li>
-          <li><a href="empresa.php">Administrar Empresas</a></li>
-          
-        </ul>
-
-      </div>
-      <div class="link-pink">
-
-        <a href="#">
-          <i ></i>Créditos
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="#">Administrar Creditos</a></li>
-          
-        </ul>
-
-      </div>
-      <div class="link-orange">
-
-        <a href="#">
-          <i ></i>Promociones
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="#">Administrar Promoción</a></li>
-                    
-        </ul>
-
-      </div>
-      <div class="link-orange">
-
-        <a href="#">
-          <i ></i>Reportes y Dashboards
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="#">Administrar Promoción</a></li>
-                    
-        </ul>
-
-      </div>
-      
-
-    </div>
+       <?php if($_SESSION['rol']==3) { ?>
+         <div class="link-yellow">
+           <a href="#">
+             <i ></i>Ventas
+           </a>
+           <ul class="sub-links">
+             <li><a href="#">Generar Venta</a></li>
+             <li><a href="#">Dosificación</a></li>
+             <li><a href="#">Facturación</a></li>
+           </ul>
+         </div>
+       <?php } ?>
+     </div>
 
     </aside>
 
 
         <div class="main-content">
 
-           <button class="btn btn-default pull-right " > <span class="glyphicon glyphicon-user" class="navbar-link"></span> Bienvenid@: <a href="perfil.php" class="navbar-link"><?php echo ''.utf8_decode($row['nombre']); ?></a></button>
-              
-          <a href="logout.php"><button class="btn btn-danger pull-right" > <span class="glyphicon glyphicon-log-out" class="navbar-link"></span>Cerrar sesión</button></a>  
+           <button class="btn btn-default pull-right " > <span class="glyphicon glyphicon-user" class="navbar-link"></span> Bienvenid@: <a href="perfil.php" class="navbar-link"><?php echo $_SESSION['usuario']; ?></a></button>
+
+          <a href="logout.php"><button class="btn btn-danger pull-right" > <span class="glyphicon glyphicon-log-out" class="navbar-link"></span>Cerrar sesión</button></a>
 
           <div class="menu">
 
-              
+
  <div class="right_col" role="main">
               <div class="">
                 <div class="page-title">
-                  
+
                 </div>
 
                 <div class="clearfix"></div>
@@ -194,9 +173,9 @@
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                       <div class="x_content">
-                          
+
                            <!-- Insert Table User -->
-                           
+
 
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <div class="x_panel">
@@ -221,7 +200,7 @@
 
 
                                     <tbody>
-                                      <?php 
+                                      <?php
                                $queryProducto="SELECT * FROM producto ";
                                $getAll = mysqli_query($con,$queryProducto);
                                while ($row = mysqli_fetch_array($getAll)):
@@ -232,18 +211,18 @@
                                   <td><?php echo $row ['descripcion'];?> </td>
                                   <td><?php echo $row ['fechaExpiracion'];?> </td>
                                   <td><?php echo $row ['codigo'];?> </td>
-                                 
+
                                  <td>
                                   <a class="btn btn-info btn-xs" href="modificarProducto.php?id=<?php echo $row ['idProducto'];?>">Editar
                                                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 
                                   </a>
-                                  
+
                                   </a>
 
 
                                 </td>
-                      
+
                                 </tr>
                               <?php endwhile; ?>
 
@@ -255,11 +234,11 @@
                                   </div>
                           </div>
                                <!-- Insert Form New Register -->
-                  
-                           
 
 
-                             
+
+
+
 
                       </div>
                     </div>
@@ -267,13 +246,13 @@
                 </div>
               </div>
             </div>
-                       
+
         </div>
 
 
       </div>
 
-  
+
 
 
 
@@ -321,9 +300,9 @@
                     }
                 }
             },
-     
-      
-    
+
+
+
 
       }
 

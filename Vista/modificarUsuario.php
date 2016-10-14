@@ -1,33 +1,9 @@
-<?php 
-
-  session_start();
-  $con=require '../Controlador/conexion.php';
-
-  #
-   include_once "../Controlador/conexion.php";
-  $cnn = new connexion();
-  $con = $cnn -> conectar();
-  $database = mysqli_select_db($con,"inventario");
-  #
-  
-  if(!isset($_SESSION["id_usuario"])){
-    header("Location: ../Vistas/index.php");
-  }
-  
-  $sql = "SELECT idRol, tipo FROM rol";
-  $result=mysqli_query($con,$sql);
-  
-  $bandera = false;
-  
-  #nombre usuario
-  $idUsuario = $_SESSION['id_usuario'];
-  
-  $sql = "SELECT u.IdRolUsuario, p.nombre FROM rolusuario AS u INNER JOIN usuario AS p ON u.idUsuario=p.idUsuario WHERE u.idUsuario = '$idUsuario'";
-  $result=mysqli_query($con,$sql);
-  
-  $row = $result->fetch_assoc();
-
-
+<?php
+session_start();
+if (!isset($_SESSION['loggedin'])) {
+    # code...
+    header("location: index.php");
+}
 ?>
 
 
@@ -77,7 +53,7 @@
 
   <aside class="sidebar-left-collapse">
      <a href="" class="company-logo">Supersol</a>
-    
+
     <div class="sidebar-links">
 
       <div class="link-blue">
@@ -89,7 +65,7 @@
         <ul class="sub-links">
           <li><a href="usuario.php">Usuarios</a></li>
           <li><a href="#">Auditoria</a></li>
-          
+
         </ul>
 
       </div>
@@ -104,7 +80,7 @@
           <li><a href="categoria.php">Categorías</a></li>
           <li><a href="producto.php">Productos</a></li>
           <li><a href="proveedor.php">Proveedores</a></li>
-        
+
         </ul>
 
       </div>
@@ -119,7 +95,7 @@
           <li><a href="#">Generar Venta</a></li>
           <li><a href="#">Dosificación</a></li>
           <li><a href="#">Facturación</a></li>
-          
+
         </ul>
 
       </div>
@@ -133,7 +109,7 @@
         <ul class="sub-links">
           <li><a href="cliente.php">Administrar Clientes</a></li>
           <li><a href="empresa.php">Administrar Empresas</a></li>
-          
+
         </ul>
 
       </div>
@@ -145,7 +121,7 @@
 
         <ul class="sub-links">
           <li><a href="#">Administrar Creditos</a></li>
-          
+
         </ul>
 
       </div>
@@ -157,7 +133,7 @@
 
         <ul class="sub-links">
           <li><a href="#">Administrar Promoción</a></li>
-                    
+
         </ul>
 
       </div>
@@ -169,23 +145,21 @@
 
         <ul class="sub-links">
           <li><a href="promocion.php">Ventas Diarias</a></li>
-                    
+
         </ul>
 
       </div>
-      
+
 
     </div>
 
     </aside>
 
-
-
         <div class="main-content">
-          
-           <button class="btn btn-default pull-right " > <span class="glyphicon glyphicon-user" class="navbar-link"></span> Bienvenid@: <a href="perfil.php" class="navbar-link"><?php echo ''.utf8_decode($row['nombre']); ?></a></button>
-              
-          <a href="logout.php"><button class="btn btn-danger pull-right" > <span class="glyphicon glyphicon-log-out" class="navbar-link"></span>Cerrar sesión</button></a>  
+
+           <button class="btn btn-default pull-right " > <span class="glyphicon glyphicon-user" class="navbar-link"></span> Bienvenid@: <a href="perfil.php" class="navbar-link"><?php echo $_SESSION['usuario']; ?></a></button>
+
+          <!-- <a href="logout.php"><button class="btn btn-danger pull-right" > <span class="glyphicon glyphicon-log-out" class="navbar-link"></span>Cerrar sesión</button></a> -->
 
 
           <div class="menu">
@@ -197,10 +171,16 @@
                         <?php
                           if (!empty($_GET['id'])) {
                              # code...
-                            $ID = $_GET['id'];
-                              $SELECT_USER = "SELECT * FROM usuario WHERE idUsuario='$ID'";
-                              $QUERY_USER = mysqli_query($con,$SELECT_USER);
-                              while ($DATA = mysqli_fetch_array($QUERY_USER)):
+                             include_once("../Controlador/conexion.php");
+
+                             $cnn = new connexion();
+                             $con = $cnn -> conectar();
+                             $database = mysqli_select_db($con,"inventario") or die("Error al conectar la base de datos");
+
+                             $ID = $_GET['id'];
+                             $SELECT_USER = "SELECT * FROM usuario WHERE idUsuario='$ID'";
+                             $QUERY_USER = mysqli_query($con,$SELECT_USER);
+                             while ($DATA = mysqli_fetch_array($QUERY_USER)):
                         ?>
                         <div class="item form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nombre <span class="required">*</span>
@@ -217,7 +197,7 @@
                             <input id="apPaterno" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="apellidoPaterno" required="required" type="text" value="<?php echo $DATA['apellidoPaterno']; ?>">
                           </div>
                         </div>
-                        
+
                         <div class="item form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Apellido Materno <span class="required">*</span>
                           </label>
@@ -247,7 +227,7 @@
                           </label>
                           <div class="col-md-6 col-sm-6 col-xs-12">
                            <select  class="form-control" name="estado">
-                              <?php 
+                              <?php
                                 $ESTADO = $DATA['estado'];
                                 if ($ESTADO == 0) {
                                   # code...
@@ -263,7 +243,7 @@
                         </div>
 
                         <div class="item form-group">
-                        
+
                           <div class="col-md-6 col-sm-6 col-xs-12">
                             <input type="hidden" id="telefono" name="id" placeholder="73738238" required="required" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12" value="<?php echo $DATA['idUsuario']; ?>">
                           </div>
@@ -284,13 +264,13 @@
 
 
 
-                       
+
        </div>
 
 
       </div>
 
-  
+
 
 
 
@@ -378,17 +358,17 @@
                 }
 
       },
-     
+
      email:{
        validators: {
                     notEmpty: {
                         message: 'El campo no puede estar vacío'
                     },
-                  
+
                    emailAddress: {
- 
+
                        message: 'El correo electronico no es valido'
-             
+
                      }
                 }
 
@@ -412,7 +392,7 @@
                 }
 
      },
-    
+
     carnet:{
 
        validators: {
@@ -430,9 +410,9 @@
                     }
                 }
 
-    },    
-      
-    
+    },
+
+
 
       }
 
@@ -442,7 +422,7 @@
 
     </script>
 
-  
+
 
 </body>
 

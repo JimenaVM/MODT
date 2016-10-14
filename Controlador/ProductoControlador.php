@@ -11,18 +11,16 @@
 	$FECHA = $_POST["fecha"];
 	$CODIGO = $_POST["codigoProducto"];
 	$IMAGEN= $_FILES['imagen']['name'];
-    $CATEGORIA=$_POST['nombreCat']; 
-    $STOCK=$_POST['stockProd'];
-    $PRECIOV=$_POST['precioVenta']; 
-	
+  $CATEGORIA=$_POST['nombreCat'];
+  $STOCK=$_POST['stockProd'];
+  $PRECIOV=$_POST['precioVenta'];
 
-	
 	$permitidos= array("image/jpg","image/jpeg","image/png");
-	    
+
     $limite=100;
     if(in_array($_FILES['imagen']['type'],$permitidos)&& $_FILES['imagen']['size']<=$limite*1024)
 		{
-			
+
 		  	$ruta="../Vista/images/" .$_FILES['imagen']['name'];
 		  	move_uploaded_file($_FILES["imagen"]["tmp_name"],$ruta);
 
@@ -31,7 +29,7 @@
 		  	$INSERT_USER = "INSERT INTO producto(idProducto,nombre,descripcion,fechaExpiracion,codigo,foto,cantidadStock,precioVenta,idCategoria)
 							VALUES('','$NOMBRE','$DESCRIPCION','$FECHA','$CODIGO','$ROOT_IMAGE','$STOCK','$PRECIOV','$CATEGORIA')";
 
-			if (!mysql_query($INSERT_USER)) {
+			if (!mysqli_query($con,$INSERT_USER)) {
 				# code...
 				echo "ERROR AL INSERTAR PRODUCTO";
 				echo "nombre" .$NOMBRE;
@@ -39,27 +37,27 @@
 				echo "fecha".$FECHA;
 				echo "cod".$CODIGO;
 				echo "ima".$IMAGEN;
-			   	echo "cate" .$CATEGORIA; 
+			   	echo "cate" .$CATEGORIA;
 			    echo "stock".$STOCK;
-			    echo "precio".$PRECIOV; 
-	
+			    echo "precio".$PRECIOV;
+
 			} else {
 
-		
-				$query= mysql_query("SELECT * FROM producto WHERE nombre='$NOMBRE' ");
-				$array = mysql_fetch_array($query);
-				$result = mysql_num_rows($query);
-				if ($result > 0) {
+
+				$query= mysqli_query("SELECT * FROM producto WHERE nombre='$NOMBRE' ");
+				$array = mysqli_fetch_array($con,$query);
+				$result = mysqli_num_rows($query);
+				if ($result == 1) {
 
 					$GET_ID = $array['idProducto'];
 					# code...
-				
+
 					header("Location: ../Vista/producto.php");
 
 				} else {
 					echo "id: ".$result;
 				}
-		
+
 			}
 		}
 ?>

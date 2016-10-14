@@ -1,34 +1,9 @@
-<?php 
- 
+<?php
 session_start();
-  $con=require '../Controlador/conexion.php';
-
-  #
-   include_once "../Controlador/conexion.php";
-  $cnn = new connexion();
-  $con = $cnn -> conectar();
-  $database = mysqli_select_db($con,"inventario") or die ("Error al Conectar con BD");
-  #
-  
-  if(!isset($_SESSION["id_usuario"])){
-    header("Location: ../Vista/index.php");
-  }
-  
-  $sql = "SELECT idRol, tipo FROM rol";
-  $result=mysqli_query($con,$sql);
-  
-  $bandera = false;
-  
-  #nombre usuario
-  $idUsuario = $_SESSION['id_usuario'];
-  
-  $sql = "SELECT u.IdRolUsuario, p.nombre FROM rolusuario AS u INNER JOIN usuario AS p ON u.idUsuario=p.idUsuario WHERE u.idUsuario = '$idUsuario'";
-  $result=mysqli_query($con,$sql);
-  
-  $row = $result->fetch_assoc();
-
-
-
+if (!isset($_SESSION['loggedin'])) {
+    # code...
+    header("location: index.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -76,120 +51,122 @@ session_start();
 
   <aside class="sidebar-left-collapse">
      <a href="" class="company-logo">Supersol</a>
-    
-    <div class="sidebar-links">
 
-      <div class="link-blue">
+     <div class="sidebar-links">
+       <?php if($_SESSION['rol']==1) { ?>
+       <div class="link-blue">
+         <a href="#">
+           <i></i>Principal
+         </a>
+         <ul class="sub-links">
+           <li><a href="usuario.php">Usuarios</a></li>
+           <li><a href="#">Auditoria</a></li>
+         </ul>
+       </div>
+       <div class="link-red">
+         <a href="#">
+           <i ></i>Inventarios
+         </a>
+         <ul class="sub-links">
+           <li><a href="categoria.php">Categorías</a></li>
+           <li><a href="producto.php">Productos</a></li>
+           <li><a href="proveedor.php">Proveedores</a></li>
+           <li><a href="#">Link 4</a></li>
+         </ul>
+       </div>
+       <div class="link-yellow">
+         <a href="#">
+           <i ></i>Ventas
+         </a>
+         <ul class="sub-links">
+           <li><a href="#">Generar Venta</a></li>
+           <li><a href="#">Dosificación</a></li>
+           <li><a href="#">Facturación</a></li>
+         </ul>
+       </div>
+       <div class="link-green">
+         <a href="#">
+           <i ></i>Clientes
+         </a>
+         <ul class="sub-links">
+           <li><a href="cliente.php">Administrar Clientes</a></li>
+           <li><a href="empresa.php">Administrar Empresas</a></li>
+         </ul>
+       </div>
+       <div class="link-pink">
+         <a href="#">
+           <i ></i>Créditos
+         </a>
+         <ul class="sub-links">
+           <li><a href="credito.php">Administrar Creditos</a></li>
+         </ul>
+       </div>
+       <div class="link-orange">
+         <a href="#">
+           <i ></i>Promociones
+         </a>
+         <ul class="sub-links">
+           <li><a href="promocion.php">Administrar Promoción</a></li>
+         </ul>
+       </div>
+       <div class="link-orange">
+         <a href="#">
+           <i ></i>Reportes y Dashboards
+         </a>
+         <ul class="sub-links">
+           <li><a href="#">Administrar Promoción</a></li>
+         </ul>
+       </div>
+       <?php } ?>
+       <?php if($_SESSION['rol']==2) { ?>
+       <div class="link-red">
+         <a href="#">
+           <i ></i>Inventarios
+         </a>
+         <ul class="sub-links">
+           <li><a href="categoria.php">Categorías</a></li>
+           <li><a href="producto.php">Productos</a></li>
+           <li><a href="proveedor.php">Proveedores</a></li>
+           <li><a href="#">Link 4</a></li>
+         </ul>
+       </div>
+       <?php } ?>
 
-        <a href="#">
-          <i></i>Principal
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="usuario.php">Usuarios</a></li>
-          <li><a href="#">Auditoria</a></li>
-          
-        </ul>
-
-      </div>
-
-      <div class="link-red">
-
-        <a href="#">
-          <i ></i>Inventarios
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="">Categorías</a></li>
-          <li><a href="producto.php">Productos</a></li>
-          <li><a href="proveedor.php">Proveedores</a></li>
-        
-        </ul>
-
-      </div>
-
-      <div class="link-yellow">
-
-        <a href="#">
-          <i ></i>Ventas
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="#">Generar Venta</a></li>
-          <li><a href="#">Dosificación</a></li>
-          <li><a href="#">Facturación</a></li>
-          
-        </ul>
-
-      </div>
-
-      <div class="link-green">
-
-        <a href="#">
-          <i ></i>Clientes
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="cliente.php">Administrar Clientes</a></li>
-          <li><a href="empresa.php">Administrar Empresas</a></li>
-          
-        </ul>
-
-      </div>
-      <div class="link-pink">
-
-        <a href="#">
-          <i ></i>Créditos
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="#">Administrar Creditos</a></li>
-          
-        </ul>
-
-      </div>
-      <div class="link-orange">
-
-        <a href="#">
-          <i ></i>Promociones
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="#">Administrar Promoción</a></li>
-                    
-        </ul>
-
-      </div>
-      <div class="link-orange">
-
-        <a href="#">
-          <i ></i>Reportes y Dashboards
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="promocion.php">Ventas Diarias</a></li>
-                    
-        </ul>
-
-      </div>
-      
-
-    </div>
+       <?php if($_SESSION['rol']==3) { ?>
+         <div class="link-yellow">
+           <a href="#">
+             <i ></i>Ventas
+           </a>
+           <ul class="sub-links">
+             <li><a href="#">Generar Venta</a></li>
+             <li><a href="#">Dosificación</a></li>
+             <li><a href="#">Facturación</a></li>
+           </ul>
+         </div>
+       <?php } ?>
+     </div>
 
     </aside>
- 
+
 
 
         <div class="main-content">
-            <button class="btn btn-default pull-right" > <span class="glyphicon glyphicon-user" class="navbar-link"></span> Bienvenid@: <a href="perfil.php" class="navbar-link"><?php echo ''.utf8_decode($row['nombre']); ?></a></button>
-              
+            <button class="btn btn-default pull-right" > <span class="glyphicon glyphicon-user" class="navbar-link"></span> Bienvenid@: <a href="perfil.php" class="navbar-link"><?php echo $_SESSION['usuario']; ?></a></button>
+
           <a href="logout.php"><button class="btn btn-danger pull-right" > <span class="glyphicon glyphicon-log-out" class="navbar-link"></span>Cerrar sesión</button></a>
-            
+
 
           <div class="menu">
+            <?php
+            include_once("../Controlador/conexion.php");
+
+            $cnn = new connexion();
+            $con = $cnn -> conectar();
+            $database = mysqli_select_db($con,"inventario") or die("Error al conectar la base de datos");
+            ?>
 
             <form id="formProducto" class="form-horizontal form-label-left"  enctype="multipart/form-data" action="../Controlador/ProductoControlador.php" method="POST">
-                                    
+
                                   <span class="section"><h1>Nuevo Producto</h1></span>
 
                                     <div class="item form-group">
@@ -217,51 +194,55 @@ session_start();
                                     <div class="item form-group">
                                           <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Fecha de expiración <span class="required">*</span>
                                           </label>
-                                       
+
                                            <div class="col-md-6 col-sm-6 col-xs-12">
 
-                                        
+
                                            <input type="date" name="fecha" id="fecha"  class="form-control" min="2016-10-13" >
                                           </div>
                                     </div>
-                                 
+
                                      <div class="item form-group">
                                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Categoría <span class="required">*</span>
                                       </label>
                                       <div class="col-md-6 col-sm-6 col-xs-12">
 
-                                         
+
                                               <select id="nombreCat" name="nombreCat" class="form-control">
                                                     <option value="0">Seleccione Categoría...</option>
-                                                    <?php 
-                                                     $queryCat="SELECT * FROM categoria";
-                                                     $getAll = mysqli_query($con,$queryCat);
-                                                    while($row = mysqli_fetch_array($getAll)){ ?>
+                                                    <?php
+                                                    $queryCat="SELECT * FROM Categoria";
+                                                    $getAll = mysqli_query($con,$queryCat);
+                                                    while($row = mysqli_fetch_array($getAll)): ?>
                                                       <option value="<?php echo $row['idCategoria']; ?>"><?php echo $row['descripcion']; ?></option>
-                                                    <?php }?>
+                                                    <?php
+                                                  endwhile;
+                                                    ?>
                                               </select>
 
-                                      </div> 
+                                      </div>
                                     </div>
                                      <div class="item form-group">
                                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Unidad medida<span class="required">*</span>
                                       </label>
                                       <div class="col-md-6 col-sm-6 col-xs-12">
 
-                                         
+
                                               <select id="unidadMed" name="unidadMed" class="form-control">
                                                     <option value="0">Seleccione Unidad...</option>
-                                                    <?php 
+                                                    <?php
                                                      $queryCat="SELECT * FROM unidadmedida";
                                                      $getAll = mysqli_query($con,$queryCat);
-                                                    while($row = mysqli_fetch_array($getAll)){ ?>
+                                                    while($row = mysqli_fetch_array($getAll)):?>
                                                       <option value="<?php echo $row['idUnidadMedida']; ?>"><?php echo $row['tipo']; ?></option>
-                                                    <?php }?>
+                                                    <?php
+                                                  endwhile;
+                                                    ?>
                                               </select>
 
-                                      </div> 
+                                      </div>
                                     </div>
-                                     
+
                                    <!--Insertar foto-->
 
                                    <div class="item form-group">
@@ -269,10 +250,10 @@ session_start();
                                       </label>
 
                                       <input id="imagen" type="file"  name="imagen" />
-                                       
-                                       
+
+
                                   </div>
-      
+
                               </div>
                               <div class="ln_solid"></div>
                               <div class="form-group">
@@ -289,13 +270,13 @@ session_start();
 
 
 
-                       
+
        </div>
 
 
       </div>
 
-  
+
 
 
 
@@ -347,7 +328,7 @@ session_start();
                     }
                 }
             },
-     
+
         desProducto: {
                 message: 'El campo no es válido',
                 validators: {
@@ -365,8 +346,8 @@ session_start();
                     }
                 }
             },
-     
-    
+
+
 
       }
 

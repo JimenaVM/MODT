@@ -25,7 +25,7 @@
 					SET nombre='$NOMBRE',apellidoPaterno='$PATERNO',apellidoMaterno='$MATERNO',email='$EMAIL',telefono='$TELEFONO',estado='$ESTADO'
 					WHERE idUsuario='$IDUSUARIO'";
 
-	
+
 	if (!mysqli_query($con,$INSERT_USER)) {
 		# code...
 		echo "ERROR AL ACTUALIZAR USUARIO";

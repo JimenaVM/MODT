@@ -1,9 +1,7 @@
 <?php
-	
-
-	class connexion{
-		function conectar(){
-			return mysqli_connect("localhost", "root", "");
-		}
+class connexion{
+	function conectar(){
+		return mysqli_connect("localhost", "root", "root");
 	}
+}
 ?>

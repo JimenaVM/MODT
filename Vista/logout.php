@@ -1,6 +1,6 @@
-<?php 
-    session_start(); 
-    session_destroy(); 
-	
-    header('location: ../Vista/index.php'); 
+<?php
+    session_start();
+    session_destroy();
+
+    header('location: index.php'); 
 ?>
