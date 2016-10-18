@@ -1,33 +1,9 @@
-<?php 
-  
- session_start();
-  //$con=require '../Controlador/conexion.php';
-
-  #
-   include_once "../Controlador/conexion.php";
-  $cnn = new connexion();
-  $con = $cnn -> conectar(); 
-  $database = mysqli_select_db($con,"inventario");
-  #
-  
-  if(!isset($_SESSION["id_usuario"])){
-    header("Location: ../Vista/index.php");
-  }
-  
-  $sql = "SELECT idRol, tipo FROM rol";
-  $result=mysqli_query($con,$sql);
-  
-  $bandera = false;
-  
-  #nombre usuario
-  $idUsuario = $_SESSION['id_usuario'];
-  
-  $sql = "SELECT u.IdRolUsuario, p.nombre FROM rolusuario AS u INNER JOIN usuario AS p ON u.idUsuario=p.idUsuario WHERE u.idUsuario = '$idUsuario'";
-  $result=mysqli_query($con,$sql);
-  
-  $row = $result->fetch_assoc();
-
-
+<?php
+session_start();
+if (!isset($_SESSION['loggedin'])) {
+    # code...
+    header("location: index.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -77,125 +53,118 @@
 <body>
 
 
-  <aside class="sidebar-left-collapse">
-     <a href="" class="company-logo">Supersol</a>
-    
-    <div class="sidebar-links">
 
-      <div class="link-blue">
+    <aside class="sidebar-left-collapse">
+       <a href="" class="company-logo">Supersol</a>
+       <div class="sidebar-links">
+         <?php if($_SESSION['rol']==1) { ?>
+         <div class="link-blue">
+           <a href="#">
+             <i></i>Principal
+           </a>
+           <ul class="sub-links">
+             <li><a href="usuario.php">Usuarios</a></li>
+             <li><a href="#">Auditoria</a></li>
+           </ul>
+         </div>
+         <div class="link-red">
+           <a href="#">
+             <i ></i>Inventarios
+           </a>
+           <ul class="sub-links">
+             <li><a href="categoria.php">Categorías</a></li>
+             <li><a href="producto.php">Productos</a></li>
+             <li><a href="proveedor.php">Proveedores</a></li>
+             <li><a href="#">Link 4</a></li>
+           </ul>
+         </div>
+         <div class="link-yellow">
+           <a href="#">
+             <i ></i>Ventas
+           </a>
+           <ul class="sub-links">
+             <li><a href="#">Generar Venta</a></li>
+             <li><a href="#">Dosificación</a></li>
+             <li><a href="#">Facturación</a></li>
+           </ul>
+         </div>
+         <div class="link-green">
+           <a href="#">
+             <i ></i>Clientes
+           </a>
+           <ul class="sub-links">
+             <li><a href="cliente.php">Administrar Clientes</a></li>
+             <li><a href="empresa.php">Administrar Empresas</a></li>
+           </ul>
+         </div>
+         <div class="link-pink">
+           <a href="#">
+             <i ></i>Créditos
+           </a>
+           <ul class="sub-links">
+             <li><a href="credito.php">Administrar Creditos</a></li>
+           </ul>
+         </div>
+         <div class="link-orange">
+           <a href="#">
+             <i ></i>Promociones
+           </a>
+           <ul class="sub-links">
+             <li><a href="promocion.php">Administrar Promoción</a></li>
+           </ul>
+         </div>
+         <div class="link-orange">
+           <a href="#">
+             <i ></i>Reportes y Dashboards
+           </a>
+           <ul class="sub-links">
+             <li><a href="#">Administrar Promoción</a></li>
+           </ul>
+         </div>
+         <?php } ?>
+         <?php if($_SESSION['rol']==2) { ?>
+         <div class="link-red">
+           <a href="#">
+             <i ></i>Inventarios
+           </a>
+           <ul class="sub-links">
+             <li><a href="categoria.php">Categorías</a></li>
+             <li><a href="producto.php">Productos</a></li>
+             <li><a href="proveedor.php">Proveedores</a></li>
+             <li><a href="#">Link 4</a></li>
+           </ul>
+         </div>
+         <?php } ?>
 
-        <a href="#">
-          <i></i>Principal
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="usuario.php">Usuarios</a></li>
-          <li><a href="#">Auditoria</a></li>
-          
-        </ul>
-
-      </div>
-
-      <div class="link-red">
-
-        <a href="#">
-          <i ></i>Inventarios
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="categoria.php">Categorías</a></li>
-          <li><a href="producto.php">Productos</a></li>
-          <li><a href="proveedor.php">Proveedores</a></li>
-        
-        </ul>
-
-      </div>
-
-      <div class="link-yellow">
-
-        <a href="#">
-          <i ></i>Ventas
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="#">Generar Venta</a></li>
-          <li><a href="#">Dosificación</a></li>
-          <li><a href="#">Facturación</a></li>
-          
-        </ul>
-
-      </div>
-
-      <div class="link-green">
-
-        <a href="#">
-          <i ></i>Clientes
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="cliente.php">Administrar Clientes</a></li>
-          <li><a href="">Administrar Empresas</a></li>
-          
-        </ul>
-
-      </div>
-      <div class="link-pink">
-
-        <a href="#">
-          <i ></i>Créditos
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="#">Administrar Creditos</a></li>
-          
-        </ul>
-
-      </div>
-      <div class="link-orange">
-
-        <a href="#">
-          <i ></i>Promociones
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="#">Administrar Promoción</a></li>
-                    
-        </ul>
-
-      </div>
-      <div class="link-orange">
-
-        <a href="#">
-          <i ></i>Reportes y Dashboards
-        </a>
-
-        <ul class="sub-links">
-          <li><a href="promocion.php">Ventas Diarias</a></li>
-                    
-        </ul>
-
-      </div>
-      
-
-    </div>
-
+         <?php if($_SESSION['rol']==3) { ?>
+           <div class="link-yellow">
+             <a href="#">
+               <i ></i>Ventas
+             </a>
+             <ul class="sub-links">
+               <li><a href="#">Generar Venta</a></li>
+               <li><a href="#">Dosificación</a></li>
+               <li><a href="#">Facturación</a></li>
+             </ul>
+           </div>
+         <?php } ?>
+       </div>
     </aside>
-
 
 
         <div class="main-content">
 
-             <button class="btn btn-default pull-right" > <span class="glyphicon glyphicon-user" class="navbar-link"></span> Bienvenid@: <a href="perfil.php" class="navbar-link"><?php echo ''.utf8_decode($row['nombre']); ?></a></button>
-                
+             <button class="btn btn-default pull-right" > <span class="glyphicon glyphicon-user" class="navbar-link"></span> Bienvenid@: <a href="perfil.php" class="navbar-link"><?php echo $_SESSION['usuario']; ?></a></button>
+
            <a href="logout.php"> <button class="btn btn-danger pull-right" > <span class="glyphicon glyphicon-log-out" class="navbar-link"></span>Cerrar sesión</button></a>
-               
+
 
           <div class="menu">
 
             <div class="right_col" role="main">
               <div class="">
                 <div class="page-title">
-                  
+
                 </div>
 
                 <div class="clearfix"></div>
@@ -204,16 +173,16 @@
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                       <div class="x_content">
-                          
+
                            <!-- Insert Table User -->
-                           
+
 
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="x_panel">
                                       <div class="x_title">
                                         <h2>Lista de Empresas<small></small></h2>
                                         <br>
-                                       
+
                                         <div class="clearfix"></div>
                                       </div>
                                       <div class="x_content">
@@ -221,36 +190,43 @@
                                         <table id="tbCategoria" class="table table-striped table-bordered dt-responsive nowrap">
                                           <thead>
                                             <tr>
-                                       
+
                                               <th>Nombre</th>
                                               <th>Nit</th>
                                               <th>Editar</th>
                                             </tr>
                                           </thead>
                                           <tbody>
-                                         
-                                                  <?php 
-                                                   $queryEmpresa="SELECT * FROM empresa";
-                                                   $getAll = mysqli_query($con,$queryEmpresa);
-                                                   while ($row = mysqli_fetch_array($getAll)):
+
+                                                  
+                                                   <?php
+                                                     include_once("../Controlador/conexion.php");
+
+                                                      $cnn = new connexion();
+                                                      $con = $cnn -> conectar();
+                                                      $database = mysqli_select_db($con,"inventario") or die("Error al conectar la base de datos");
+                                                     $queryUsuarios="SELECT * FROM empresa";
+                                                     $getAll = mysqli_query($con,$queryUsuarios);
+                                                     while ($row = mysqli_fetch_array($getAll, MYSQLI_ASSOC)):
                                                    ?>
+
                                                    <tr>
                                                      <th scope="row"><?php echo $row ["nombreEmpresa"];?></th>
                                                      <td><?php echo $row ['nit'];?> </td>
                                                      <td>
-                                                         
-                                                
+
+
                                                           <a class="btn btn-info btn-xs" href="modificarEmpresa.php?id=<?php echo $row ['idEmpresa'];?>">Editar
                                                                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 
                                                           </a>
                                                     </td>
-                                          
+
                                                     </tr>
                                                 <?php endwhile; ?>
                                           </tbody>
                                         </table>
- 
+
                                       </div>
                                     </div>
                                   </div>
@@ -261,7 +237,7 @@
                     <div class="x_panel">
                       <div class="x_title">
                         <h2>Nueva Empresa</h2>
-                      
+
                         <div class="clearfix"></div>
                       </div>
                       <div class="x_content">
@@ -276,7 +252,7 @@
                                           <input id="nombreEmpresa" class="form-control col-md-7 col-xs-12"  data-validate-length-range="10" data-validate-words="2" name="nombreEmpresa"  type="text">
                                         </div>
                                       </div>
-                                       
+
                                       <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nit <span class="required">*</span>
                                         </label>
@@ -290,7 +266,7 @@
 
                           <div class="form-group">
                             <div class="col-md-9 col-md-offset-3">
-                          
+
                               <button type="submit" class="btn btn-success">Registrar</button>
                             </div>
                           </div>
@@ -300,10 +276,10 @@
                     </div>
                   </div>
                   <!-- /form input mask -->
-                           
 
 
-                             
+
+
 
                       </div>
                     </div>
@@ -321,13 +297,13 @@
 
 
 
-                       
+
        </div>
 
 
       </div>
 
-  
+
 <script>
     $(document).ready(function () {
     $('#tbCategoria').DataTable({
@@ -418,8 +394,8 @@
             },
 
      },
-      
-    
+
+
 
       }
 
@@ -427,7 +403,7 @@
       });
 
     </script>
-    
+
 
 </body>
 

@@ -27,16 +27,7 @@ if (!isset($_SESSION['loggedin'])) {
        <link rel="stylesheet" type="text/css" href="css/bootstrap.css.map">
        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css.map">
-       <style type="text/css">
-        .navbar{
-          margin-left: 0px;
-          .img{
-          	width: 10px;
-          	height: 10px;
-          }
-        }
-       </style>
-      <!-- End estilo -->
+
   </head>
   <body>
   	<aside class="sidebar-left-collapse">
@@ -60,7 +51,7 @@ if (!isset($_SESSION['loggedin'])) {
   					<li><a href="categoria.php">Categorías</a></li>
   					<li><a href="producto.php">Productos</a></li>
   					<li><a href="proveedor.php">Proveedores</a></li>
-  					<li><a href="#">Link 4</a></li>
+  					<li><a href="">Inventario</a></li>
   				</ul>
   			</div>
   			<div class="link-yellow">
@@ -116,7 +107,7 @@ if (!isset($_SESSION['loggedin'])) {
   					<li><a href="categoria.php">Categorías</a></li>
   					<li><a href="producto.php">Productos</a></li>
   					<li><a href="proveedor.php">Proveedores</a></li>
-  					<li><a href="Almacen.php"inventario</a></li>
+  					<li><a href="almacen.php">Almacen</a></li>
   				</ul>
   			</div>
   			<?php } ?>
@@ -137,10 +128,99 @@ if (!isset($_SESSION['loggedin'])) {
     </aside>
     <div class="main-content">
       <button class="btn btn-default pull-right " > <span class="glyphicon glyphicon-user" class="navbar-link"></span> Bienvenid@: <a href="perfil.php" class="navbar-link"><?php echo $_SESSION['usuario']; ?></a></button>
-     <a href="logout.php"><button class="btn btn-danger pull-right" > <span class="glyphicon glyphicon-log-out" class="navbar-link"></span>Cerrar sesión</button></a> -->
+     <a href="logout.php"><button class="btn btn-danger pull-right" > <span class="glyphicon glyphicon-log-out" class="navbar-link"></span>Cerrar sesión</button></a>
       <div class="menu">
-        <h1>MINI MARKET</h1>
-        <H2>SUPERSOL</H2>
+
+
+        <div class="right_col" role="main">
+                     <div class="">
+                       <div class="page-title">
+
+                       </div>
+
+                       <div class="clearfix"></div>
+
+                       <div class="row">
+                         <div class="col-md-12 col-sm-12 col-xs-12">
+                           <div class="x_panel">
+                             <div class="x_content">
+
+                                  <!-- Insert Table User -->
+
+
+                                       <div class="col-md-12 col-sm-12 col-xs-12">
+                                           <div class="x_panel">
+                                             <div class="x_title">
+                                               <h1>INVENTARIO<small></small></h1>
+                                                  <h2>Registro de ingresos<small></small></h2>
+                                               <div class="clearfix"></div>
+                                               <a href="../Vista/almacen.php"><h5> Volver</h5></a>
+
+                                             </div>
+                                             <div class="x_content">
+
+                                               <table class="table table-striped table-bordered">
+                                                  <thead>
+                                             <tr>
+                                               <th>Imagen</th>
+                                               <th>Nombre</th>
+                                               <th>Fecha</th>
+                                               <th>Stock Minimo</th>
+                                                <th>Stock Actual</th>
+                                               <th>Precio</th>
+                                               <th>Opciones</th>
+                                             </tr>
+                                           </thead>
+
+
+                                           <tbody>
+
+
+
+                                                <?php
+                                                 include_once("../Controlador/conexion.php");
+
+                                                 $cnn = new connexion();
+                                                 $con = $cnn -> conectar();
+                                                 $database = mysqli_select_db($con,"inventario") or die("Error al conectar la base de datos");
+                                                 $queryCategoria="SELECT * FROM producto";
+                                                 $getAll = mysqli_query($con,$queryCategoria);
+                                                 while ($row = mysqli_fetch_array($getAll)):
+                                               ?>
+
+                                      <tr>
+
+                                         <th scope="row"><?php echo $row ['nombre'];?></th>
+                                         <td><?php echo $row ['descripcion'];?> </td>
+
+                                         <td><?php echo $row ['codigo'];?> </td>
+
+                                        <td>
+                                         <a class="btn btn-info btn-xs" href="modificarProducto.php?id=<?php echo $row ['idProducto'];?>">Editar
+                                                                       <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+
+                                         </a>
+
+                                         </a>
+
+
+                                       </td>
+
+                                       </tr>
+                                     <?php endwhile; ?>
+
+                                           </tbody>
+                                               </table>
+
+                                             </div>
+                                           </div>
+                                         </div>
+                                 </div>
+                                      <!-- Insert Form New Register -->
+
+
+
+
       </div>
     </div>
 

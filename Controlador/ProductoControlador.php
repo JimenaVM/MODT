@@ -6,14 +6,13 @@
 	$con = $cnn -> conectar();
 	$database = mysqli_select_db($con,"inventario") ;
 
+
+	$CODIGO = $_POST["codigoProducto"];
 	$NOMBRE = strtoupper($_POST["nomProducto"]);
 	$DESCRIPCION = $_POST["desProducto"];
-	$FECHA = $_POST["fecha"];
-	$CODIGO = $_POST["codigoProducto"];
 	$IMAGEN= $_FILES['imagen']['name'];
   $CATEGORIA=$_POST['nombreCat'];
-  $STOCK=$_POST['stockProd'];
-  $PRECIOV=$_POST['precioVenta'];
+	$UNIDAD=$_POST['unidadMed'];
 
 	$permitidos= array("image/jpg","image/jpeg","image/png");
 
@@ -24,28 +23,29 @@
 		  	$ruta="../Vista/images/" .$_FILES['imagen']['name'];
 		  	move_uploaded_file($_FILES["imagen"]["tmp_name"],$ruta);
 
-		  	$ROOT_IMAGE = "http://localhost:3030/Supersol/Vista/images/".$IMAGEN;
+		  	$ROOT_IMAGE = "http://localhost/Supersol/Vista/images/".$IMAGEN;
 
-		  	$INSERT_USER = "INSERT INTO producto(idProducto,nombre,descripcion,fechaExpiracion,codigo,foto,cantidadStock,precioVenta,idCategoria)
-							VALUES('','$NOMBRE','$DESCRIPCION','$FECHA','$CODIGO','$ROOT_IMAGE','$STOCK','$PRECIOV','$CATEGORIA')";
+		  	$INSERT_USER = "INSERT INTO producto(idProducto,codigo,nombre,descripcion,foto,idCategoria,idUnidadMedida)
+							VALUES('','$CODIGO','$NOMBRE','$DESCRIPCION','$ROOT_IMAGE','$CATEGORIA','$UNIDAD')";
 
 			if (!mysqli_query($con,$INSERT_USER)) {
 				# code...
 				echo "ERROR AL INSERTAR PRODUCTO";
 				echo "nombre" .$NOMBRE;
 				echo "des".$DESCRIPCION;
-				echo "fecha".$FECHA;
+
 				echo "cod".$CODIGO;
-				echo "ima".$IMAGEN;
+				echo "ima".$ROOT_IMAGE;
 			   	echo "cate" .$CATEGORIA;
-			    echo "stock".$STOCK;
-			    echo "precio".$PRECIOV;
+
+
+
 
 			} else {
 
 
-				$query= mysqli_query("SELECT * FROM producto WHERE nombre='$NOMBRE' ");
-				$array = mysqli_fetch_array($con,$query);
+				$query= mysqli_query($con,"SELECT * FROM producto WHERE nombre='$NOMBRE' ");
+				$array = mysqli_fetch_array($query);
 				$result = mysqli_num_rows($query);
 				if ($result == 1) {
 
@@ -59,5 +59,6 @@
 				}
 
 			}
+
 		}
 ?>

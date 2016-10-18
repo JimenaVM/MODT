@@ -1,33 +1,9 @@
-<?php 
- 
+<?php
 session_start();
-  $con=require '../Controlador/conexion.php';
-
-  #
-   include_once "../Controlador/conexion.php";
-  $cnn = new connexion();
-  $con = $cnn -> conectar();
-  $database = mysqli_select_db($con,"inventario");
-  #
-  
-  if(!isset($_SESSION["id_usuario"])){
-    header("Location: ../Vista/index.php");
-  }
-  
-  $sql = "SELECT idRol, tipo FROM rol";
-  $result=mysqli_query($con,$sql);
-  
-  $bandera = false;
-  
-  #nombre usuario
-  $idUsuario = $_SESSION['id_usuario'];
-  
-  $sql = "SELECT u.IdRolUsuario, p.nombre FROM rolusuario AS u INNER JOIN usuario AS p ON u.idUsuario=p.idUsuario WHERE u.idUsuario = '$idUsuario'";
-  $result=mysqli_query($con,$sql);
-  
-  $row = $result->fetch_assoc();
-
-
+if (!isset($_SESSION['loggedin'])) {
+    # code...
+    header("location: index.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -76,127 +52,120 @@ session_start();
 </head>
 
 <body>
-
-
   <aside class="sidebar-left-collapse">
-     <a href="" class="company-logo">Supersol</a>
-    
+    <a href="" class="company-logo">Supersol</a>
     <div class="sidebar-links">
-
+      <?php if($_SESSION['rol']==1) { ?>
       <div class="link-blue">
-
         <a href="#">
           <i></i>Principal
         </a>
-
         <ul class="sub-links">
           <li><a href="usuario.php">Usuarios</a></li>
           <li><a href="#">Auditoria</a></li>
-          
         </ul>
-
       </div>
-
       <div class="link-red">
-
         <a href="#">
           <i ></i>Inventarios
         </a>
-
         <ul class="sub-links">
           <li><a href="categoria.php">Categorías</a></li>
           <li><a href="producto.php">Productos</a></li>
-          <li><a href="">Proveedores</a></li>
-        
+          <li><a href="proveedor.php">Proveedores</a></li>
+          <li><a href="#">Link 4</a></li>
         </ul>
-
       </div>
-
       <div class="link-yellow">
-
         <a href="#">
           <i ></i>Ventas
         </a>
-
         <ul class="sub-links">
           <li><a href="#">Generar Venta</a></li>
           <li><a href="#">Dosificación</a></li>
           <li><a href="#">Facturación</a></li>
-          
         </ul>
-
       </div>
-
       <div class="link-green">
-
         <a href="#">
           <i ></i>Clientes
         </a>
-
         <ul class="sub-links">
           <li><a href="cliente.php">Administrar Clientes</a></li>
           <li><a href="empresa.php">Administrar Empresas</a></li>
-          
         </ul>
-
       </div>
       <div class="link-pink">
-
         <a href="#">
           <i ></i>Créditos
         </a>
-
         <ul class="sub-links">
-          <li><a href="#">Administrar Creditos</a></li>
-          
+          <li><a href="credito.php">Administrar Creditos</a></li>
         </ul>
-
       </div>
       <div class="link-orange">
-
         <a href="#">
           <i ></i>Promociones
         </a>
-
         <ul class="sub-links">
-          <li><a href="#">Administrar Promoción</a></li>
-                    
+          <li><a href="promocion.php">Administrar Promoción</a></li>
         </ul>
-
       </div>
       <div class="link-orange">
-
         <a href="#">
           <i ></i>Reportes y Dashboards
         </a>
-
         <ul class="sub-links">
-          <li><a href="promocion.php">Ventas Diarias</a></li>
-                    
+          <li><a href="#">Administrar Promoción</a></li>
         </ul>
-
       </div>
-      
+      <?php } ?>
+      <?php if($_SESSION['rol']==2) { ?>
+      <div class="link-red">
+        <a href="#">
+          <i ></i>Inventarios
+        </a>
+        <ul class="sub-links">
+          <li><a href="categoria.php">Categorías</a></li>
+          <li><a href="producto.php">Productos</a></li>
+          <li><a href="proveedor.php">Proveedores</a></li>
+          <li><a href="#">Link 4</a></li>
+        </ul>
+      </div>
+      <?php } ?>
 
+      <?php if($_SESSION['rol']==3) { ?>
+        <div class="link-yellow">
+          <a href="#">
+            <i ></i>Ventas
+          </a>
+          <ul class="sub-links">
+            <li><a href="#">Generar Venta</a></li>
+            <li><a href="#">Dosificación</a></li>
+            <li><a href="#">Facturación</a></li>
+          </ul>
+        </div>
+      <?php } ?>
     </div>
 
-    </aside>
+  </aside>
+
 
 
 
         <div class="main-content">
 
-             <button class="btn btn-default pull-right" > <span class="glyphicon glyphicon-user" class="navbar-link"></span> Bienvenid@: <a href="perfil.php" class="navbar-link"><?php echo ''.utf8_decode($row['nombre']); ?></a></button>
-                
-            <a href="logout.php"><button class="btn btn-danger pull-right" > <span class="glyphicon glyphicon-log-out" class="navbar-link"></span>Cerrar sesión</button></a> 
-               
+             <button class="btn btn-default pull-right" > <span class="glyphicon glyphicon-user" class="navbar-link"></span> Bienvenid@: <a href="perfil.php" class="navbar-link"><?php echo $_SESSION['usuario']; ?></a></button>
+
+            <a href="logout.php"><button class="btn btn-danger pull-right" > <span class="glyphicon glyphicon-log-out" class="navbar-link"></span>Cerrar sesión</button></a>
+
 
           <div class="menu">
 
             <div class="right_col" role="main">
               <div class="">
                 <div class="page-title">
-                  
+
                 </div>
 
                 <div class="clearfix"></div>
@@ -205,16 +174,16 @@ session_start();
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                       <div class="x_content">
-                          
+
                            <!-- Insert Table User -->
-                           
+
 
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="x_panel">
                                       <div class="x_title">
                                         <h2>Lista de Proveedores<small></small></h2>
                                         <br>
-                                       
+
                                         <div class="clearfix"></div>
                                       </div>
                                       <div class="x_content">
@@ -222,7 +191,7 @@ session_start();
                                         <table id="tbCategoria" class="table table-striped table-bordered dt-responsive nowrap">
                                           <thead>
                                             <tr>
-                                       
+
                                                 <th>Nombre</th>
                                                 <th>Nit</th>
                                                 <th>Estado</th>
@@ -231,52 +200,58 @@ session_start();
                                             </tr>
                                           </thead>
                                           <tbody>
-                                             <?php 
-                                                   $queryProveedor="SELECT * FROM proveedor";
-                                                   $getAll = mysqli_query($con,$queryProveedor);
-                                                   while ($row = mysqli_fetch_array($getAll)):
-                                                   ?>
+                                                  <?php
+                                                  include_once("../Controlador/conexion.php");
+
+                                                  $cnn = new connexion();
+                                                  $con = $cnn -> conectar();
+                                                  $database = mysqli_select_db($con,"inventario") or die("Error al conectar la base de datos");
+                                                  $queryCategoria="SELECT * FROM proveedor";
+                                                  $getAll = mysqli_query($con,$queryCategoria);
+                                                  while ($row = mysqli_fetch_array($getAll)):
+                                                  ?>
+                                                
                                                    <tr>
                                                      <th scope="row"><?php echo $row ["nombre"];?></th>
                                                      <td><?php echo $row ['nit'];?> </td>
 
-                                                    
+
                                                        <td><?php switch ($row ['estado']) {
                                                             case '1':
                                                               echo "
                                                                 <a class=\"btn btn-success btn-xs\">
                                                                               <span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
 
-                                                                      
+
                                                               break;
-                                                            
+
                                                             case '0':
                                                               echo "
                                                                 <a class=\"btn btn-danger btn-xs\">
                                                                               <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>";
 
-                                                               
+
                                                               break;
-                                                           } ?> 
+                                                           } ?>
                                                         </td>
 
                                                         <td><?php echo $row ['numeroAutorizacion'];?> </td>
-                                                     
+
                                                      <td>
 
                                                       <a class="btn btn-info btn-xs" href="modificarProveedor.php?id=<?php echo $row ['idProveedor'];?>">
                                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 
                                                       </a>
-                                                        
+
                                                     </td>
-                                          
+
                                                  </tr>
                                                   <?php endwhile; ?>
 
                                           </tbody>
                                         </table>
- 
+
                                       </div>
                                     </div>
                                   </div>
@@ -287,7 +262,7 @@ session_start();
                     <div class="x_panel">
                       <div class="x_title">
                         <h2>Nuevo Proveedor</h2>
-                      
+
                         <div class="clearfix"></div>
                       </div>
                       <div class="x_content">
@@ -315,13 +290,13 @@ session_start();
                                   <input id="numAutorizacion" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="numAutorizacion"   type="text">
                                 </div>
                               </div>
-                             
+
                              <div class="item form-group">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Estado <span class="required">*</span>
                                   </label>
                                   <div class="col-md-6 col-sm-6 col-xs-12">
                                    <select  class="form-control" name="estado">
-                                      <?php 
+                                      <?php
                                         $ESTADO = $DATA['estado'];
                                         if ($ESTADO == 0) {
                                           # code...
@@ -336,16 +311,16 @@ session_start();
                                   </div>
                              </div>
                              <div class="item form-group">
-                                
+
                                   <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input type="hidden" id="telefono" name="id" placeholder="73738238" required="required" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12" value="<?php echo $DATA['idProveedor']; ?>">
                                   </div>
                                 </div>
 
-                              
 
 
-                                  
+
+
                             </div>
                             <div class="ln_solid"></div>
                               <div class="form-group">
@@ -362,10 +337,10 @@ session_start();
                     </div>
                   </div>
                   <!-- /form input mask -->
-                           
 
 
-                             
+
+
 
                       </div>
                     </div>
@@ -383,13 +358,13 @@ session_start();
 
 
 
-                       
+
        </div>
 
 
       </div>
 
-  
+
 <script>
     $(document).ready(function () {
     $('#tbCategoria').DataTable({
@@ -462,7 +437,7 @@ session_start();
                     }
                 }
             },
-     
+
       nitProveedor:{
          message: 'El nit no es válido',
                 validators: {
@@ -499,7 +474,7 @@ session_start();
                 }
 
       },
-    
+
 
       }
 
@@ -507,7 +482,7 @@ session_start();
       });
 
     </script>
-    
+
 
 </body>
 

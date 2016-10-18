@@ -1,31 +1,9 @@
-<?php 
- session_start();
-  $con=require '../Controlador/conexion.php';
-
-  include_once "../Controlador/conexion.php";
-  $cnn = new connexion();
-  $con = $cnn -> conectar();
-  $database = mysql_select_db("inventario") or die ("Error al Conectar con BD");
-
-
- if(!isset($_SESSION["id_usuario"])){
-    header("Location: ../Vista/index.php");
-  }
-  
-  $sql = "SELECT idRol, tipo FROM rol";
-  $result=$mysqli->query($sql);
-  
-  $bandera = false;
-  
-  #nombre usuario
-  $idUsuario = $_SESSION['id_usuario'];
-  
-  $sql = "SELECT u.IdRolUsuario, p.nombre FROM rolusuario AS u INNER JOIN usuario AS p ON u.idUsuario=p.idUsuario WHERE u.idUsuario = '$idUsuario'";
-  $result=$mysqli->query($sql);
-  
-  $row = $result->fetch_assoc();
-  
-
+<?php
+session_start();
+if (!isset($_SESSION['loggedin'])) {
+    # code...
+    header("location: index.php");
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -75,117 +53,110 @@
 
 
   <aside class="sidebar-left-collapse">
-     <a href="" class="company-logo">Supersol</a>
-    
+    <a href="" class="company-logo">Supersol</a>
     <div class="sidebar-links">
-
+      <?php if($_SESSION['rol']==1) { ?>
       <div class="link-blue">
-
         <a href="#">
           <i></i>Principal
         </a>
-
         <ul class="sub-links">
           <li><a href="usuario.php">Usuarios</a></li>
           <li><a href="#">Auditoria</a></li>
-          
         </ul>
-
       </div>
-
       <div class="link-red">
-
         <a href="#">
           <i ></i>Inventarios
         </a>
-
         <ul class="sub-links">
           <li><a href="categoria.php">Categorías</a></li>
           <li><a href="producto.php">Productos</a></li>
           <li><a href="proveedor.php">Proveedores</a></li>
-        
+          <li><a href="#">Link 4</a></li>
         </ul>
-
       </div>
-
       <div class="link-yellow">
-
         <a href="#">
           <i ></i>Ventas
         </a>
-
         <ul class="sub-links">
           <li><a href="#">Generar Venta</a></li>
           <li><a href="#">Dosificación</a></li>
           <li><a href="#">Facturación</a></li>
-          
         </ul>
-
       </div>
-
       <div class="link-green">
-
         <a href="#">
           <i ></i>Clientes
         </a>
-
         <ul class="sub-links">
           <li><a href="cliente.php">Administrar Clientes</a></li>
           <li><a href="empresa.php">Administrar Empresas</a></li>
-          
         </ul>
-
       </div>
       <div class="link-pink">
-
         <a href="#">
           <i ></i>Créditos
         </a>
-
         <ul class="sub-links">
-          <li><a href="#">Administrar Creditos</a></li>
-          
+          <li><a href="credito.php">Administrar Creditos</a></li>
         </ul>
-
       </div>
       <div class="link-orange">
-
         <a href="#">
           <i ></i>Promociones
         </a>
-
         <ul class="sub-links">
-          <li><a href="#">Administrar Promoción</a></li>
-                    
+          <li><a href="promocion.php">Administrar Promoción</a></li>
         </ul>
-
       </div>
       <div class="link-orange">
-
         <a href="#">
           <i ></i>Reportes y Dashboards
         </a>
-
         <ul class="sub-links">
-          <li><a href="promocion.php">Ventas Diarias</a></li>
-                    
+          <li><a href="#">Administrar Promoción</a></li>
         </ul>
-
       </div>
-      
+      <?php } ?>
+      <?php if($_SESSION['rol']==2) { ?>
+      <div class="link-red">
+        <a href="#">
+          <i ></i>Inventarios
+        </a>
+        <ul class="sub-links">
+          <li><a href="categoria.php">Categorías</a></li>
+          <li><a href="producto.php">Productos</a></li>
+          <li><a href="proveedor.php">Proveedores</a></li>
+          <li><a href="#">Link 4</a></li>
+        </ul>
+      </div>
+      <?php } ?>
 
+      <?php if($_SESSION['rol']==3) { ?>
+        <div class="link-yellow">
+          <a href="#">
+            <i ></i>Ventas
+          </a>
+          <ul class="sub-links">
+            <li><a href="#">Generar Venta</a></li>
+            <li><a href="#">Dosificación</a></li>
+            <li><a href="#">Facturación</a></li>
+          </ul>
+        </div>
+      <?php } ?>
     </div>
-
-    </aside>
+  </aside>
 
 
 
         <div class="main-content">
 
-             <button class="btn btn-default pull-right" > <span class="glyphicon glyphicon-user" class="navbar-link"></span> Bienvenid@: <a href="perfil.php" class="navbar-link"><?php echo ''.utf8_decode($row['nombre']); ?></a></button>
-                
+             <button class="btn btn-default pull-right" > <span class="glyphicon glyphicon-user" class="navbar-link"></span> Bienvenid@: <a href="perfil.php" class="navbar-link"><?php echo $_SESSION['usuario']; ?></a></button>
+
            <a href="logout.php"> <button class="btn btn-danger pull-right" > <span class="glyphicon glyphicon-log-out" class="navbar-link"></span>Cerrar sesión</button></a>
-               
+
 
           <div class="menu">
 
@@ -193,15 +164,24 @@
                       <form class="form-horizontal form-label-left" action="../Controlador/UpdateProducto.php" method="POST" enctype="multipart/form-data">
                         <br>
                         <span class="section"><h1>Editar Producto</h1></span>
+
                         <?php
-                          if (!empty($_GET['id'])) {
-                             # code...
-                            $ID = $_GET['id'];
-                              $SELECT_USER = "SELECT * FROM producto WHERE idProducto='$ID'";
-                              $QUERY_USER = mysql_query($SELECT_USER);
-                              while ($DATA = mysql_fetch_array($QUERY_USER)):
-                        ?>
-                                             
+                        if (!empty($_GET['id'])) {
+                          # code...
+                          include_once("../Controlador/conexion.php");
+
+                          $cnn = new connexion();
+                          $con = $cnn -> conectar();
+                          $database = mysqli_select_db($con,"inventario");
+                          $ID = $_GET['id'];
+                          $SELECT_USER = "SELECT * FROM producto WHERE idProducto='$ID'";
+                          $QUERY_USER = mysqli_query($con,$SELECT_USER);
+                          $DATA = mysqli_fetch_assoc($QUERY_USER);
+                          //while ($DATA = mysqli_fetch_array($QUERY_USER):
+                      ?>
+
+                      <?php }?>
+
 
                                     <div class="item form-group">
                                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nombre <span class="required">*</span>
@@ -217,16 +197,7 @@
                                         <input id="desProd" class="form-control col-md-7 col-xs-12" data-validate-length-range="20" data-validate-words="2" name="desProducto"  type="text" value="<?php echo $DATA['descripcion']; ?>">
                                       </div>
                                     </div>
-                                     <div class="item form-group">
-                                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Fecha de expiración <span class="required">*</span>
-                                          </label>
-                                       
-                                           <div class="col-md-6 col-sm-6 col-xs-12">
 
-                                        
-                                           <input type="date" name="fecha" id="fecha" required="required" class="form-control col-md-7 col-xs-12" value="<?php echo $DATA['fechaExpiracion']; ?>">
-                                          </div>
-                                    </div>
                                     <div class="item form-group">
                                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Código <span class="required">*</span>
                                       </label>
@@ -239,70 +210,56 @@
                                       </label>
                                       <div class="col-md-6 col-sm-6 col-xs-12">
 
-                                         
+
                                               <select id="nombreCat" name="nombreCat" class="form-control">
                                                     <option value="0">Seleccione Categoría...</option>
-                                                    <?php 
-                                                     $queryCat="SELECT * FROM categoria";
-                                                     $getAll = mysql_query($queryCat);
-                                                    while($row = mysql_fetch_array($getAll, MYSQLI_ASSOC)){ ?>
-                                                      <option value="<?php echo $row['idCategoria']; ?>" <?php if ($row['idCategoria'] == $DATA['idCategoria']) {
-                                                        # code...
-                                                        echo "selected";
-                                                      }?> ><?php echo $row['descripcion']; ?></option>
-                                                    <?php }?>
+
+                                                    <?php
+                                                     $queryRoles="SELECT * FROM categoria";
+                                                     $getAll = mysqli_query($con,$queryRoles);
+                                                    while($row = mysqli_fetch_array($getAll, MYSQLI_ASSOC)){ ?>
+                                                    <option value="<?php echo $row['idCategoria']; ?>" <?php if ($row['idCategoria'] == $DATA['idCategoria']) {
+                                                          # code...
+                                                          echo "selected";
+                                                        }?> ><?php echo $row['descripcion']; ?></option>
+                                                      <?php }?>
+
+
                                               </select>
 
+
                                       </div>
                                     </div>
-                                     <div class="item form-group">
-                                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Cantidad en stock <span class="required">*</span>
-                                      </label>
-                                      <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input id="stockProd" class="form-control col-md-7 col-xs-12" data-validate-length-range="4" data-validate-words="2" name="stockProd"  type="text" value="<?php echo $DATA['cantidadStock']; ?>">
-                                      </div>
-                                    </div>
-                                     <div class="item form-group">
-                                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Precio de venta<span class="required">*</span>
-                                      </label>
-                                      <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input id="precioVenta" class="form-control col-md-7 col-xs-12" data-validate-length-range="3" data-validate-words="2" name="precioVenta"   type="text" value="<?php echo $DATA['precioVenta']; ?>">
-                                      </div>
-                                    </div>
+
+
                                    <!--Insertar foto-->
 
-                                   <div class="item form-group">
-                                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Foto actual <span class="required">*</span>
-                                      </label>
-                                      <img width="72" height="72" src="<?php echo $DATA ['foto']; ?>">
-                                       <input id="imagen" name="imagen" type="file" />
-                                     
-                                  </div>
-                               
-                                 
-                              
-
-                                        
-                              </div>
+                                     <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Foto actual <span class="required">*</span>
+                                        </label>
+                                          <div class="col-md-6 col-sm-6 col-xs-12">
+                                             <input id="imagen" name="imagen" type="file" class="btn btn-success"/>
+                                        <img width="72" height="72" src="<?php echo $DATA ['foto']; ?>">
+                                      </div>
 
 
-                              <div class="item form-group">
-                        
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="hidden" id="telefono" name="id" placeholder="73738238" required="required" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12" value="<?php echo $DATA['idProducto']; ?>">
-                          </div>
-                        </div>
-                             
+                                    </div>
+
+
+                                    <div class="item form-group">
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                          <input type="hidden" id="telefono" name="id"  data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12" value="<?php echo $DATA['idProducto']; ?>">
+                                        </div>
+                                    </div>
+
                         <div class="ln_solid"></div>
                         <div class="form-group">
                           <div class="col-md-6 col-md-offset-3">
                             <button id="send" type="submit" class="btn btn-success">Actualizar</button>
                           </div>
                         </div>
-                        <?php
-                            endwhile;
-                          }
-                        ?>
+
                       </form>
 
 
@@ -313,13 +270,13 @@
 
 
 
-                       
+
        </div>
 
 
       </div>
 
-  
+
 <script>
     $(document).ready(function () {
     $('#tbCategoria').DataTable({
@@ -391,9 +348,9 @@
                     }
                 }
             },
-     
-      
-    
+
+
+
 
       }
 
@@ -401,7 +358,7 @@
       });
 
     </script>
-    
+
 
 </body>
 

@@ -6,12 +6,12 @@
 	$con = $cnn -> conectar();
 	$database = mysqli_select_db($con,"inventario");
 	$IDEMPRESA = $_POST["id"];
-	$NOMBRE = $_POST["nombreCliente"];
+	$NOMBRE = strtoupper($_POST["nombreCliente"]);
 	$CEDULA = $_POST["cedulaCliente"];
 
 
-	
-  $VERIFY_USER = "SELECT * FROM cliente WHERE nombre='$NOMBRE' || cedulaNit='$CEDULA'";
+
+  $VERIFY_USER = "SELECT * FROM cliente WHERE  cedulaNit='$CEDULA'";
   $QUERY_VERIFY = mysqli_query($con,$VERIFY_USER);
   $TAM = mysqli_num_rows($QUERY_VERIFY);
   if ($TAM > 0) {
@@ -23,7 +23,7 @@
 					SET nombre='$NOMBRE',cedulaNit='$CEDULA'
 					WHERE idCliente='$IDEMPRESA'";
 
-	
+
 	if (!mysqli_query($con,$INSERT_USER)) {
 		# code...
 		echo "ERROR AL ACTUALIZAR CLIENTE";
@@ -31,6 +31,7 @@
 		header("Location: ../Vista/cliente.php");
 	}
 }
+
 
 
 	mysql_close($con);

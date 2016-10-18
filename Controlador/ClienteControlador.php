@@ -6,10 +6,10 @@
 	$con = $cnn -> conectar();
 	$database = mysqli_select_db($con,"inventario");
 
-    
-	$NOMBRE = $_POST["nombreCliente"];
+
+	$NOMBRE = strtoupper($_POST["nombreCliente"]);
 	$CEDULA = $_POST["cedCliente"];
-	
+
 
   $VERIFY_USER = "SELECT * FROM cliente WHERE nombre='$NOMBRE'";
   $QUERY_VERIFY = mysqli_query($con,$VERIFY_USER);
@@ -19,19 +19,19 @@
   } else {
 				    $INSERT_USER = "INSERT INTO cliente(idCliente,nombre,cedulaNit)
 									VALUES('','$NOMBRE','$CEDULA')";
-				       
-				     
+
+
 					if (!mysqli_query($con,$INSERT_USER)) {
 						# code...
-						echo "ERROR AL CREAR NUEVA MARCA";
+						echo "ERROR AL CREAR NUEVO CLIENTE";
 					} else {
 						header("Location: ../Vista/cliente.php");
 					}
 
 
-					
 
-	
+
+
 	mysqli_close($con);
-	}	
+	}
 ?>

@@ -269,7 +269,7 @@ if (!isset($_SESSION['loggedin'])) {
                             message: 'EL campo debe estar entre 3-30 caracteres'
                         },
                         regexp: {
-                            regexp: /^[a-zA-ZñÑ_\.]+$/,
+                            regexp: /^[a-zA-ZñÑ\s]+$/,
                             message: 'El campo solo acepta letras'
                         }
                     }

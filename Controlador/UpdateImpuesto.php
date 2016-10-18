@@ -4,7 +4,8 @@
 
 	$cnn = new connexion();
 	$con = $cnn -> conectar();
-	$database = mysql_select_db("inventario") or die ("Error al Conectar con BD");
+	$database = mysqli_select_db($con,"inventario");
+
 	$IDIMP = $_POST["id"];
 	$NOMBRE = strtoupper($_POST["nombreImp"]);
 	$PORCE= $_POST["impPor"];
@@ -20,11 +21,11 @@
 					SET nombre='$NOMBRE',Ice='$PORCE'
 					WHERE idImpuesto='$IDIMP'";
 		}
-   
-	
 
-	
-	if (!mysql_query($INSERT_USER)) {
+
+
+
+	if (!mysqli_query($con,$INSERT_USER)) {
 		# code...
 		echo "ERROR AL ACTUALIZAR IMPUESTO";
 		echo "id".$IDIMP;

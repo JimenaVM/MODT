@@ -18,6 +18,8 @@ if (!isset($_SESSION['loggedin'])) {
 
   <title>Supersol</title>
 
+
+
   <link rel="stylesheet" href="assets/demo.css">
   <link rel="stylesheet" href="assets/sidebar-collapse.css">
 
@@ -28,7 +30,7 @@ if (!isset($_SESSION['loggedin'])) {
     <!-- start estilo -->
      <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css">
      <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css.map">
-     <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+     <link rel="stylesheet" type="text/css" href="../css/bootstrap-theme.min.css">
      <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css.map">
      <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
      <link rel="stylesheet" type="text/css" href="css/bootstrap.css.map">
@@ -36,13 +38,6 @@ if (!isset($_SESSION['loggedin'])) {
      <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css.map">
      <link rel="stylesheet" type="text/css" href="css/bootstrapValidator.min.css">
      <link rel="stylesheet" type="text/css" href="css/bootstrapValidator.scss">
-
-<style type="text/css">
-  .navbar{
-    margin-left: 0px;
-  }
-</style>
-    <!-- End estilo -->
 
 </head>
 
@@ -127,7 +122,7 @@ if (!isset($_SESSION['loggedin'])) {
            <li><a href="categoria.php">Categorías</a></li>
            <li><a href="producto.php">Productos</a></li>
            <li><a href="proveedor.php">Proveedores</a></li>
-           <li><a href="#">Link 4</a></li>
+           <li><a href="almacen.php">Almacen</a></li>
          </ul>
        </div>
        <?php } ?>
@@ -146,7 +141,7 @@ if (!isset($_SESSION['loggedin'])) {
        <?php } ?>
      </div>
 
-    </aside>
+  </aside>
 
 
 
@@ -191,16 +186,6 @@ if (!isset($_SESSION['loggedin'])) {
                                         <input id="desProd" class="form-control col-md-7 col-xs-12" data-validate-length-range="20" data-validate-words="2" name="desProducto"   type="text">
                                       </div>
                                     </div>
-                                    <div class="item form-group">
-                                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Fecha de expiración <span class="required">*</span>
-                                          </label>
-
-                                           <div class="col-md-6 col-sm-6 col-xs-12">
-
-
-                                           <input type="date" name="fecha" id="fecha"  class="form-control" min="2016-10-13" >
-                                          </div>
-                                    </div>
 
                                      <div class="item form-group">
                                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Categoría <span class="required">*</span>
@@ -229,7 +214,7 @@ if (!isset($_SESSION['loggedin'])) {
 
 
                                               <select id="unidadMed" name="unidadMed" class="form-control">
-                                                    <option value="0">Seleccione Unidad...</option>
+                                                    <option value="">Seleccione Unidad...</option>
                                                     <?php
                                                      $queryCat="SELECT * FROM unidadmedida";
                                                      $getAll = mysqli_query($con,$queryCat);
@@ -248,13 +233,14 @@ if (!isset($_SESSION['loggedin'])) {
                                    <div class="item form-group">
                                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Foto <span class="required" >*</span>
                                       </label>
+                                      <div class="col-md-6 col-sm-6 col-xs-12">
 
-                                      <input id="imagen" type="file"  name="imagen" />
+                                        <input id="imagen" type="file"  name="imagen" class="btn btn-success"/>
 
-
+                                     </div>
                                   </div>
 
-                              </div>
+
                               <div class="ln_solid"></div>
                               <div class="form-group">
                                   <div class="col-md-6 col-md-offset-3">
@@ -275,8 +261,6 @@ if (!isset($_SESSION['loggedin'])) {
 
 
       </div>
-
-
 
 
 
@@ -303,12 +287,12 @@ if (!isset($_SESSION['loggedin'])) {
     });
 
   </script>
+
     <script type="text/javascript">
 
       $(document).ready(function() {
       $('#formProducto').bootstrapValidator({
         message: 'Este valor no es válido',
-
       fields: {
 
       nomProducto: {

@@ -34,12 +34,6 @@ if (!isset($_SESSION['loggedin'])) {
      <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
      <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css.map">
 
-<style type="text/css">
-  .navbar{
-    margin-left: 0px;
-  }
-</style>
-    <!-- End estilo -->
 
 </head>
 
@@ -74,7 +68,7 @@ if (!isset($_SESSION['loggedin'])) {
            <li><a href="categoria.php">Categorías</a></li>
            <li><a href="producto.php">Productos</a></li>
            <li><a href="proveedor.php">Proveedores</a></li>
-           <li><a href="#">Link 4</a></li>
+           <li><a href="almacen.php">Inventario</a></li>
          </ul>
        </div>
        <div class="link-yellow">
@@ -192,7 +186,7 @@ if (!isset($_SESSION['loggedin'])) {
                                         <th>Imagen</th>
                                         <th>Nombre</th>
                                         <th>Descripción</th>
-                                        <th>Fecha de expiración</th>
+
                                         <th>Código</th>
                                         <th>Opciones</th>
                                       </tr>
@@ -200,16 +194,25 @@ if (!isset($_SESSION['loggedin'])) {
 
 
                                     <tbody>
-                                      <?php
-                               $queryProducto="SELECT * FROM producto ";
-                               $getAll = mysqli_query($con,$queryProducto);
-                               while ($row = mysqli_fetch_array($getAll)):
-                               ?>
+
+
+
+                                         <?php
+                                          include_once("../Controlador/conexion.php");
+
+                                          $cnn = new connexion();
+                                          $con = $cnn -> conectar();
+                                          $database = mysqli_select_db($con,"inventario") or die("Error al conectar la base de datos");
+                                          $queryCategoria="SELECT * FROM producto";
+                                          $getAll = mysqli_query($con,$queryCategoria);
+                                          while ($row = mysqli_fetch_array($getAll)):
+                                        ?>
+
                                <tr>
                                   <th scope="row"><?php echo '<img width="56" height="56" src='.$row ['foto'].'>';?></th>
                                   <th scope="row"><?php echo $row ['nombre'];?></th>
                                   <td><?php echo $row ['descripcion'];?> </td>
-                                  <td><?php echo $row ['fechaExpiracion'];?> </td>
+
                                   <td><?php echo $row ['codigo'];?> </td>
 
                                  <td>
